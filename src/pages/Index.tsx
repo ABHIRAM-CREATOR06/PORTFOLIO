@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
@@ -46,7 +45,7 @@ const Index = () => {
       <footer className="py-6 bg-secondary/30 text-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} Alex Chen. All rights reserved.
+            &copy; {new Date().getFullYear()} Abhiram P. All rights reserved.
           </p>
         </div>
       </footer>
