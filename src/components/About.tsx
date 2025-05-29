@@ -42,6 +42,11 @@ const About = () => {
     company: "Freelancing Platforms",
     period: "2019 - Present",
     description: "Contributed to various open-source projects, including bug fixes, feature enhancements, and documentation improvements."
+  },{
+    position: "Web Team Member",
+    company: "MuLearn SNGCE",
+    period: "2024 - Present",
+    description: "Contributed to the designing to enhance online visibility through visually compelling assets."
   }];
   
   return <section id="about" className="section-container" ref={ref}>
