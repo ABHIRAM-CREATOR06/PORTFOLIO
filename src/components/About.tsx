@@ -47,7 +47,13 @@ const About = () => {
     company: "MuLearn SNGCE",
     period: "2024 - Present",
     description: "Contributed to the designing to enhance online visibility through visually compelling assets."
-  }];
+  },{
+    position: "Campus Lead",
+    company: "Tinkerhub SNGCE",
+    period: "2025 - Present",
+    description: "Actively involved in promoting Tinkerhub's initiatives and organizing events to foster a culture of innovation and creativity among students."
+  }
+];
   
   return <section id="about" className="section-container" ref={ref}>
       <motion.div initial={{
