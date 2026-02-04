@@ -64,7 +64,7 @@ const Projects = () => {
       description: "A complete Accessibility Tools web application designed to enhance web accessibility for users with disabilities, featuring tools like WCAG checker,developer based Extension and Accessbilty violation correcting toolbox",
       tags: ["Javascript", "Puppeteer Sharp", "C#", ".NET", "Rust"],
       image: "https://source.unsplash.com/1600x900/?portfolio,design",
-      github: "https://github.com/ABHIRAM-CREATOR06/Portfolio"
+      github: "https://github.com/ABHIRAM-CREATOR06/Acess1"
     }
   ];
 
