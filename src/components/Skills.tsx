@@ -17,15 +17,16 @@ const Skills = () => {
     { name: 'Python', level: 90, category: 'Languages' },
     { name: 'C', level: 80, category: 'Languages' },
     { name: 'Java', level: 75, category: 'Languages' },
-    { name: 'TypeScript', level: 85, category: 'Languages' },
+    { name: 'TypeScript', level: 80, category: 'Languages' },
     
     // Frontend
-    { name: 'React', level: 90, category: 'Frontend' },
+    { name: 'React', level: 85, category: 'Frontend' },
     { name: 'HTML/CSS', level: 95, category: 'Frontend' },
-    { name: 'TailwindCSS', level: 90, category: 'Frontend' },
+    { name: 'TailwindCSS', level: 70, category: 'Frontend' },
     
     // Backend
-    { name: 'Firebase', level: 85, category: 'Backend' },
+    { name: 'Firebase', level: 75, category: 'Backend' },
+    { name: 'Node JS', level: 80, category: 'Backend' },
     { name: 'Deno', level: 80, category: 'Backend' },
     
     // Data
@@ -35,7 +36,12 @@ const Skills = () => {
     
     // DevOps & Tools
     { name: 'Git', level: 90, category: 'DevOps & Tools' },
-    { name: 'Azure', level: 80, category: 'DevOps & Tools' },
+    { name: 'Azure', level: 60, category: 'DevOps & Tools' },
+
+    // Designs;
+    { name: 'Figma', level: 70, category: 'Designs' },
+    { name: 'Adobe XD', level: 65, category: 'Designs' },
+    { name: 'Canva', level: 90, category: 'Designs' },
   ];
 
   const categories = Array.from(new Set(skills.map(skill => skill.category)));

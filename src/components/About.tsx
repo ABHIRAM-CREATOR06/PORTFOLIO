@@ -45,7 +45,7 @@ const About = () => {
   },{
     position: "Web Team Member",
     company: "MuLearn SNGCE",
-    period: "2024 - Present",
+    period: "2024 - 2025",
     description: "Contributed to the designing to enhance online visibility through visually compelling assets."
   },{
     position: "Campus Lead",

@@ -38,7 +38,7 @@ const Projects = () => {
       id: 3,
       title: "Number Conversion Calculator",
       description: "A Rust project that performs number conversions with decimal points using a custom module and the rust_decimal crate, along with various unit conversion features.",
-      tags: ["Rust", "Calculator", "Conversion", "CLI"],
+      tags: ["Rust","CLI"],
       image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
       github: "https://github.com/ABHIRAM-CREATOR06/Number-Conversion-Calctor"
     },
@@ -57,6 +57,14 @@ const Projects = () => {
       tags: ["HTML", "CSS", "JAVASCRIPT", "FIGMA"],
       image: "https://source.unsplash.com/1600x900/?space,design",
       github: "https://github.com/ABHIRAM-CREATOR06/Frontenend-challenge"
+    },
+    {
+      id: 6,
+      title: "AXIS WEB SERVICES ",
+      description: "A complete Accessibility Tools web application designed to enhance web accessibility for users with disabilities, featuring tools like WCAG checker,developer based Extension and Accessbilty violation correcting toolbox",
+      tags: ["Javascript", "Puppeteer Sharp", "C#", ".NET", "Rust"],
+      image: "https://source.unsplash.com/1600x900/?portfolio,design",
+      github: "https://github.com/ABHIRAM-CREATOR06/Portfolio"
     }
   ];
 
