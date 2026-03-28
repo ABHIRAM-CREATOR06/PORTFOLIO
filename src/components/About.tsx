@@ -4,12 +4,9 @@ import {
   FileText,
   User,
   GraduationCap,
-  Award,
   Briefcase,
-  Plus,
-  Edit,
-  Check,
-  X,
+  MapPin,
+  Calendar,
 } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
@@ -45,43 +42,99 @@ const About = () => {
   ]);
 
   const [activeTab, setActiveTab] = useState("personal");
+  const [expandedCompany, setExpandedCompany] = useState<string | null>(null);
 
-  const experience = [
+  // LinkedIn-style: Group positions by company
+  const experienceByCompany = [
     {
-      position: "Software Engineering Intern",
-      company: "BSNL",
-      period: "Summer 2024",
-      description:
-        "Worked on the development of a web-based application for managing customer data and improving user experience.",
-    },
-    {
-      position: "Joint Creative Lead",
-      company: "IEDC",
-      period: "2024 - Present",
-      description:
-        "Led a team of designers and developers to create innovative solutions for real-world problems and promote entrepreneurship in the college.",
-    },
-    {
-      position: "Open Source Contributor",
-      company: "Freelancing Platforms",
-      period: "2019 - Present",
-      description:
-        "Contributed to various open-source projects, including bug fixes, feature enhancements, and documentation improvements.",
-    },
-    {
-      position: "Web Team Member",
-      company: "MuLearn SNGCE",
-      period: "2024 - 2025",
-      description:
-        "Contributed to the designing to enhance online visibility through visually compelling assets.",
-    },
-    {
-      position: "Campus Lead",
       company: "Tinkerhub SNGCE",
-      period: "2025 - 2026",
-      description:
-        "Actively involved in promoting Tinkerhub's initiatives and organizing events to foster a culture of innovation and creativity among students.",
+      location: "Kerala, India",
+      logo: "/upload/tinkerhub-logo.png",
+      useImage: true,
+      positions: [
+        {
+          id: 1,
+          position: "Campus Lead",
+          period: "2025 - Present",
+          description: "Actively involved in promoting Tinkerhub's initiatives and organizing events to foster a culture of innovation and creativity among students.",
+          skills: ["Leadership", "Event Management", "Community Building"]
+        },
+        {
+          id: 2,
+          position: "Volunteer",
+          period: "2023 - 2024",
+          description: "Supported Tinkerhub activities and events, assisting in community outreach and promoting maker culture among students.",
+          skills: ["Volunteering", "Community Engagement", "Event Support"]
+        }
+      ]
     },
+    {
+      company: "IEDC",
+      location: "Kerala, India",
+      logo: "/upload/iedc-logo.svg",
+      useImage: true,
+      positions: [
+        {
+          id: 3,
+          position: "Joint Creative Lead",
+          period: "2024 - Present",
+          description: "Led a team of designers and developers to create innovative solutions for real-world problems and promote entrepreneurship in the college.",
+          skills: ["Team Leadership", "Project Management", "Entrepreneurship"]
+        },
+        {
+          id: 4,
+          position: "Volunteer",
+          period: "2023 - 2024",
+          description: "Contributed to IEDC events and initiatives, supporting entrepreneurship activities and student innovation programs.",
+          skills: ["Volunteering", "Event Planning", "Student Engagement"]
+        }
+      ]
+    },
+    {
+      company: "MuLearn SNGCE",
+      location: "Kerala, India",
+      logo: "/upload/mulearn-logo.svg",
+      useImage: true,
+      positions: [
+        {
+          id: 5,
+          position: "Web Team Member",
+          period: "2024 - 2025",
+          description: "Contributed to the designing to enhance online visibility through visually compelling assets.",
+          skills: ["Web Design", "Graphic Design", "Digital Marketing"]
+        }
+      ]
+    },
+    {
+      company: "BSNL",
+      location: "Kerala, India",
+      logo: "/upload/bsnl-logo.svg",
+      useImage: true,
+      positions: [
+        {
+          id: 6,
+          position: "Software Engineering Intern",
+          period: "Summer 2024",
+          description: "Worked on the development of a web-based application for managing customer data and improving user experience.",
+          skills: ["Web Development", "Data Management", "UI/UX"]
+        }
+      ]
+    },
+    {
+      company: "Freelancing Platforms",
+      location: "Remote",
+      logo: "F",
+      logoColor: "bg-blue-500",
+      positions: [
+        {
+          id: 7,
+          position: "Open Source Contributor",
+          period: "2019 - Present",
+          description: "Contributed to various open-source projects, including bug fixes, feature enhancements, and documentation improvements.",
+          skills: ["Open Source", "Git", "Documentation"]
+        }
+      ]
+    }
   ];
 
   return (
@@ -253,29 +306,118 @@ const About = () => {
 
               <TabsContent value="personal" className="mt-0">
                 <div>
-                  <div className="flex items-center gap-2 mb-4">
+                  <div className="flex items-center gap-2 mb-6">
                     <Briefcase size={20} className="text-primary" />
                     <h3 className="text-xl font-semibold">Experience</h3>
                   </div>
+                  
+                  {/* LinkedIn-style: Company header with multiple positions */}
                   <div className="space-y-6">
-                    {experience.map((item, index) => (
+                    {experienceByCompany.map((company, companyIndex) => (
                       <motion.div
-                        key={index}
+                        key={company.company}
                         initial={{ opacity: 0, y: 10 }}
-                        animate={
-                          isInView
-                            ? { opacity: 1, y: 0 }
-                            : { opacity: 0, y: 10 }
-                        }
-                        transition={{ duration: 0.3, delay: 0.4 + index * 0.1 }}
-                        className="relative pl-6 border-l-2 border-primary/30"
+                        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
+                        transition={{ duration: 0.3, delay: 0.4 + companyIndex * 0.1 }}
+                        className="bg-card rounded-lg border border-border/50 overflow-hidden"
                       >
-                        <div className="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-primary" />
-                        <h4 className="font-semibold">{item.position}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {item.company} | {item.period}
-                        </p>
-                        <p className="text-sm mt-1">{item.description}</p>
+                        {/* Company Header - LinkedIn style */}
+                        <div className="p-4 border-b border-border">
+                          <div className="flex gap-4">
+                            {/* Company Logo */}
+                            <div className="flex-shrink-0">
+                              {company.useImage ? (
+                                <img 
+                                  src={company.logo} 
+                                  alt={`${company.company} logo`}
+                                  className="w-14 h-14 rounded-lg object-cover shadow-sm"
+                                />
+                              ) : (
+                                <div className={`w-14 h-14 rounded-lg ${company.logoColor || 'bg-muted'} flex items-center justify-center shadow-sm text-white`}>
+                                  <span className="text-sm font-bold">{company.logo}</span>
+                                </div>
+                              )}
+                            </div>
+                            
+                            <div className="flex-grow">
+                              <h4 className="font-semibold text-lg">{company.company}</h4>
+                              <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                                <MapPin size={14} />
+                                <span>{company.location}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Positions under this company - LinkedIn Timeline Style */}
+                        <div className="p-4 pl-5 relative">
+                          {/* Vertical timeline line - consistent positioning */}
+                          {company.positions.length > 1 && (
+                            <div className="absolute left-[9px] top-8 bottom-8 w-0.5 bg-border" />
+                          )}
+                          
+                          {company.positions.map((pos, posIndex) => (
+                            <div key={pos.id} className={`relative ${posIndex > 0 ? "pt-6" : ""}`}>
+                              {/* Timeline dot */}
+                              <div className="absolute left-[-18px] top-1 flex flex-col items-center">
+                                <div className={`w-2.5 h-2.5 rounded-full ring-2 ring-background ${posIndex === 0 ? 'bg-primary' : 'bg-muted-foreground/50'}`} />
+                                {posIndex < company.positions.length - 1 && (
+                                  <div className="w-0.5 flex-grow bg-border absolute top-2" />
+                                )}
+                              </div>
+                              
+                              <div className="flex justify-between items-start gap-2">
+                                <div>
+                                  <h5 className="font-medium text-base">{pos.position}</h5>
+                                  <div className="flex items-center gap-2 text-sm text-muted-foreground mt-1">
+                                    <Calendar size={14} />
+                                    <span>{pos.period}</span>
+                                  </div>
+                                </div>
+                              </div>
+                              
+                              {/* Expandable: Description + Skills */}
+                              <div className="mt-3">
+                                <button
+                                  onClick={() => setExpandedCompany(expandedCompany === `${company.company}-${pos.id}` ? null : `${company.company}-${pos.id}`)}
+                                  className="text-sm font-medium text-primary hover:text-primary/80 transition-colors flex items-center gap-1"
+                                >
+                                  {expandedCompany === `${company.company}-${pos.id}` ? 'Show less' : 'Show more'}
+                                </button>
+                              </div>
+                              
+                              {/* Expanded: Description + Skills */}
+                              {expandedCompany === `${company.company}-${pos.id}` && (
+                                <motion.div
+                                  initial={{ height: 0, opacity: 0 }}
+                                  animate={{ height: 'auto', opacity: 1 }}
+                                  transition={{ duration: 0.3 }}
+                                  className="mt-3 pt-3 border-t border-border"
+                                >
+                                  {/* Description */}
+                                  <p className="text-sm text-muted-foreground mb-3">{pos.description}</p>
+                                  
+                                  {/* Skills */}
+                                  {pos.skills && (
+                                    <>
+                                      <p className="text-xs font-medium text-muted-foreground mb-2">Skills</p>
+                                      <div className="flex flex-wrap gap-2">
+                                        {pos.skills.map((skill, i) => (
+                                          <span 
+                                            key={i}
+                                            className="text-xs px-2 py-1 bg-muted rounded-full text-muted-foreground"
+                                          >
+                                            {skill}
+                                          </span>
+                                        ))}
+                                      </div>
+                                    </>
+                                  )}
+                                </motion.div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
                       </motion.div>
                     ))}
                   </div>
