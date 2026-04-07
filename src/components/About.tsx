@@ -75,10 +75,17 @@ const About = () => {
       useImage: true,
       positions: [
         {
+          id: 6,
+          position: "Creative Lead",
+          period: "2026 - Present",
+          description: "Led a team of designers and developers to create innovative solutions for real-world problems and promote entrepreneurship in the college.",
+          skills: ["Canva", "Figma","Team Leadership"]
+        },
+        {
           id: 3,
           position: "Joint Creative Lead",
           period: "2024 - Present",
-          description: "Led a team of designers and developers to create innovative solutions for real-world problems and promote entrepreneurship in the college.",
+          description: "Collaborated with a team of designers and developers to create innovative solutions for real-world problems and promote entrepreneurship in the college.",
           skills: ["Team Leadership", "Project Management", "Entrepreneurship"]
         },
         {
