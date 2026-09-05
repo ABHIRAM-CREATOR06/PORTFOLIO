@@ -9,6 +9,7 @@ lerna-debug.log*
 
 node_modules
 dist
+bun.lockb
 dist-ssr
 *.local
 private/
