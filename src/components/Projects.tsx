@@ -1,196 +1,190 @@
-import { useState, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { ExternalLink, Github } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 
 interface Project {
-  id: number;
-  title: string;
-  description: string;
+  id: string;
+  perm: string;
+  name: string;
+  desc: string;
+  detail: string;
   tags: string[];
-  image: string;
-  github?: string;
-  demo?: string;
+  link?: string;
+  linkLabel?: string;
 }
 
+const PROJECTS: Project[] = [
+  {
+    id: 'p-axis',
+    perm: 'drwxr-xr-x',
+    name: 'axis/',
+    desc: 'Accessibility auditing tool, WCAG 2.2 / RPwD Act compliant',
+    detail:
+      'An accessibility auditing tool built to check software against WCAG 2.2 and India\'s Rights of Persons with Disabilities Act. Shipped as SDKs across three ecosystems — .NET, npm, and Rust — so it can drop into whatever stack a team is already running. Presented at MangaluruFOSS.',
+    tags: ['.NET', 'npm', 'Rust', 'WCAG 2.2'],
+    link: '#contact',
+    linkLabel: 'ask about this project →',
+  },
+  {
+    id: 'p-halonyx',
+    perm: 'drwxr-xr-x',
+    name: 'halonyx/',
+    desc: 'Signal Protocol messenger, built to learn cryptography from first principles',
+    detail:
+      'A messenger implementing the Signal Protocol end to end: X3DH key exchange, the Double Ratchet, safety numbers for MITM detection, and peer-to-peer file transfer over WebTorrent. Explicitly not for production — the point was understanding the protocol, not shipping a product. Runs on a self-hostable, zero-knowledge Federated Relay Architecture: relays forward encrypted blobs and never see plaintext. Backed by a formal STRIDE threat model tracking eighteen findings. AGPL-3.0.',
+    tags: ['X3DH', 'Double Ratchet', 'WebTorrent', 'STRIDE'],
+    link: 'https://github.com/ABHIRAM-CREATOR06/Halonyx',
+    linkLabel: 'github.com/ABHIRAM-CREATOR06/Halonyx',
+  },
+  {
+    id: 'p-trinetra',
+    perm: 'drwxr-xr-x',
+    name: 'trinetra/',
+    desc: 'Multi-layer telecom fraud intelligence platform — work in progress',
+    detail:
+      'त्रिनेत्र — a multi-layer telecom fraud intelligence and risk-detection platform, named for the third eye that sees hidden patterns. Rust, Axum, and SQLx over SQLite form the core; Python with pandas and NetworkX are planned for the data and graph-intelligence layers, with a React dashboard further out. Phase 1 — the core data model, generator, and rule engine — is delivered; the rest is roadmap.',
+    tags: ['Rust', 'Axum', 'SQLite', 'NetworkX (planned)'],
+    link: 'https://github.com/ABHIRAM-CREATOR06/Trinetra',
+    linkLabel: 'github.com/ABHIRAM-CREATOR06/Trinetra',
+  },
+  {
+    id: 'p-bankpulse',
+    perm: '-rw-r--r--',
+    name: 'bankpulse.py',
+    desc: 'Loan approval predictor with an explainability layer — internship project',
+    detail:
+      'Built during an internship at ICT Academy of Kerala: a Flask and scikit-learn loan-approval prediction system with a Mistral AI explainability layer sitting behind an /assistant route, so a rejected or approved decision comes with a plain-language reason attached.',
+    tags: ['Flask', 'scikit-learn', 'Mistral AI'],
+    link: '#contact',
+    linkLabel: 'ask about this project →',
+  },
+];
+
 const Projects = () => {
-  const [activeTab, setActiveTab] = useState<string>('all');
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
+  const [openIds, setOpenIds] = useState<Set<string>>(new Set());
+  const tableRef = useRef<HTMLTableSectionElement>(null);
 
-  const projects: Project[] = [
-    {
-      id: 1,
-      title: "AXIS SUITE",
-      description: "A complete Accessibility Tools web application designed to enhance web accessibility for users with disabilities, featuring tools like WCAG checker, developer based Extension and Accessibility violation correcting toolbox",
-      tags: ["Javascript", "Puppeteer Sharp", "C#", ".NET", "Rust"],
-      image: "https://source.unsplash.com/1600x900/?portfolio,design",
-      github: "https://github.com/ABHIRAM-CREATOR06/Acess1"
-    },
-    {
-      id: 2,
-      title: "MOVIE-APPLICATION",
-      description: "A GUI-based application that suggests movies by genre, lets users search for films, and retrieves cast and crew details with theme toggling and full-screen support.",
-      tags: ["Python", "Tkinter", "Web Scraping", "GUI"],
-      image: "https://source.unsplash.com/1600x900/?movie,film",
-      github: "https://github.com/ABHIRAM-CREATOR06/MOVIE-APPLICATION"
-    },
-    {
-      id: 3,
-      title: "Number Conversion Calculator",
-      description: "A Rust project that performs number conversions with decimal points using a custom module and the rust_decimal crate, along with various unit conversion features.",
-      tags: ["Rust", "CLI"],
-      image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-      github: "https://github.com/ABHIRAM-CREATOR06/Number-Conversion-Calctor"
-    },
-    {
-      id: 4,
-      title: "Halonyx Secura",
-      description: "End-to-end encrypted messaging built on the Signal Protocol. X3DH handles the key exchange, Double Ratchet handles every message after that. The server stores almost nothing useful, which was the point.",
-      tags: ["Node.js", "WebSockets", "Cryptography", "X3DH", "Double Ratchet", "AES-256-GCM"],
-      image: "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
-      github: "https://github.com/ABHIRAM-CREATOR06/Halonyx"
-    },
-    {
-      id: 5,
-      title: "Iron Armour",
-      description: "A Windows desktop password vault built with C# and WPF. AES-256-GCM encryption, BCrypt master password hashing, multi-user support, and optional MySQL sync across devices. Also pulls saved Wi-Fi passwords using Windows netsh and exports strength reports as PDF or CSV.",
-      tags: ["C#", "WPF", "AES-256-GCM", "SQLite", "MySQL", "Rust"],
-      image: "https://source.unsplash.com/1600x900/?space,design",
-      github: "https://github.com/ABHIRAM-CREATOR06/IRON-ARMOUR"
-    },
-    {
-      id: 6,
-      title: "Satellight Tracker",
-      description: "A Rust-based terminal UI application that provides real-time satellite trajectory tracking, allowing efficient analysis of satellite positions.",
-      tags: ["Rust", "Terminal", "React", "API", "TypeScript", "Python"],
-      image: "https://source.unsplash.com/1600x900/?satellite,space",
-      github: "https://github.com/ABHIRAM-CREATOR06/Satellight-Tracker"
-    }
-  ];
-
-  const uniqueTags = Array.from(new Set(projects.flatMap(project => project.tags)));
-  
-  const filteredProjects = activeTab === 'all' 
-    ? projects 
-    : projects.filter(project => project.tags.includes(activeTab));
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
+  const toggle = (id: string) => {
+    setOpenIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
       }
-    }
+      return next;
+    });
   };
 
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.4 }
+  // Staggered reveal on first intersection
+  useEffect(() => {
+    const rows = tableRef.current?.querySelectorAll('.proj-row');
+    if (!rows || rows.length === 0) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) {
+      rows.forEach((row) => ((row as HTMLElement).style.opacity = '1'));
+      return;
     }
-  };
+
+    // Start rows transparent
+    rows.forEach((row) => {
+      (row as HTMLElement).style.opacity = '0';
+      (row as HTMLElement).style.transition = 'opacity 0.4s ease';
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const allRows = Array.from(rows);
+            const idx = allRows.indexOf(entry.target as HTMLElement);
+            setTimeout(() => {
+              (entry.target as HTMLElement).style.opacity = '1';
+            }, idx * 90);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    rows.forEach((row) => observer.observe(row));
+    return () => observer.disconnect();
+  }, []);
 
   return (
-    <section id="projects" className="section-container" ref={ref}>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.5 }}
-        className="text-center mb-12"
-      >
-        <span className="inline-block px-3 py-1 text-sm font-medium bg-primary/10 text-primary rounded-full mb-4">
-          Portfolio
-        </span>
-        <h2 className="heading-lg mb-4">My Latest Projects</h2>
-        <p className="paragraph max-w-2xl mx-auto text-muted-foreground">
-          Here are some of the projects I've worked on recently, showcasing my skills in Rust, Python, and more.
-        </p>
-      </motion.div>
+    <section id="projects" className="file" data-section>
+      <div className="filehead">
+        <span>projects/</span>
+        <span>ls -la</span>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="flex flex-wrap justify-center gap-2 mb-10"
-      >
-        <button
-          onClick={() => setActiveTab('all')}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-            activeTab === 'all'
-              ? 'bg-primary text-primary-foreground'
-              : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-          }`}
-        >
-          All
-        </button>
-        {uniqueTags.map(tag => (
-          <button
-            key={tag}
-            onClick={() => setActiveTab(tag)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-              activeTab === tag
-                ? 'bg-primary text-primary-foreground'
-                : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
-            }`}
-          >
-            {tag}
-          </button>
-        ))}
-      </motion.div>
-
-      <motion.div
-        variants={containerVariants}
-        initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-      >
-        {filteredProjects.map(project => (
-          <motion.div
-            key={project.id}
-            variants={itemVariants}
-            className="glass rounded-xl p-6 hover:shadow-lg transition-shadow duration-300"
-          >
-            <h3 className="heading-sm mb-3">{project.title}</h3>
-            <p className="text-muted-foreground mb-4 text-sm leading-relaxed">{project.description}</p>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {project.tags.map(tag => (
-                <span key={tag} className="text-xs font-medium px-3 py-1 bg-secondary rounded-full">
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <div className="flex gap-4 pt-2 border-t border-border">
-              {project.github && (
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
+      <table className="ls">
+        <caption>total {PROJECTS.length} — click a row to read more</caption>
+        <thead>
+          <tr>
+            <th>permissions</th>
+            <th>name</th>
+            <th>description</th>
+          </tr>
+        </thead>
+        <tbody ref={tableRef}>
+          {PROJECTS.map((proj) => {
+            const isOpen = openIds.has(proj.id);
+            return (
+              <Fragment key={proj.id}>
+                <tr
+                  className="proj-row"
+                  tabIndex={0}
+                  role="button"
+                  aria-expanded={isOpen}
+                  onClick={() => toggle(proj.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      toggle(proj.id);
+                    }
+                  }}
                 >
-                  <Github size={16} />
-                  <span>Code</span>
-                </a>
-              )}
-              {project.demo && (
-                <a
-                  href={project.demo}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors"
-                >
-                  <ExternalLink size={16} />
-                  <span>Live Demo</span>
-                </a>
-              )}
-            </div>
-          </motion.div>
-        ))}
-      </motion.div>
+                  <td className="perm">{proj.perm}</td>
+                  <td className="name">{proj.name}</td>
+                  <td>{proj.desc}</td>
+                </tr>
+                <tr>
+                  <td className="proj-detail" colSpan={3}>
+                    <div className={`proj-detail-inner ${isOpen ? 'open' : ''}`}>
+                      <div className="pad">
+                        <p>{proj.detail}</p>
+                        <div className="tag-row">
+                          {proj.tags.map((tag) => (
+                            <span key={tag} className="tag">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        {proj.link && (
+                          <div className="proj-links">
+                            <a
+                              href={proj.link}
+                              target={proj.link.startsWith('http') ? '_blank' : undefined}
+                              rel={proj.link.startsWith('http') ? 'noopener' : undefined}
+                            >
+                              {proj.linkLabel}
+                            </a>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </Fragment>
+            );
+          })}
+        </tbody>
+      </table>
     </section>
   );
 };
+
+import { Fragment } from 'react';
 
 export default Projects;

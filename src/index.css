@@ -2,128 +2,408 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-
-    --primary: 210 100% 50%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222 47% 11%;
-
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-
-    --accent: 176 73% 80%;
-    --accent-foreground: 222 47% 11%;
-
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222 47% 11%;
-
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
-
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 100% 66%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 20%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 222 47% 15%;
-    --muted-foreground: 210 40% 80%;
-
-    --accent: 176 73% 60%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 84% 40%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 222 47% 20%;
-    --input: 222 47% 20%;
-    --ring: 210 40% 98%;
-  }
+/* ============================================================
+   Design tokens — strict grayscale ramp
+   ============================================================ */
+:root {
+  --void:   #050505;
+  --panel:  #0d0d0e;
+  --line:   #1c1c1d;
+  --muted:  #7a7a80;
+  --ink:    #b7b7b2;
+  --bright: #f2f2ec;
+  --mono:   'JetBrains Mono', ui-monospace, 'SF Mono', Consolas, monospace;
+  --sans:   'IBM Plex Sans', -apple-system, sans-serif;
+  --sidebar-w: 250px;
+  --statusbar-h: 28px;
+  --tabbar-h: 40px;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
+/* ============================================================
+   Reset / base
+   ============================================================ */
+* { box-sizing: border-box; }
 
-  body {
-    @apply bg-background text-foreground antialiased overflow-x-hidden;
-    @apply dark:bg-background dark:text-foreground;
-    font-feature-settings: "ss01", "ss02", "cv01", "cv02", "cv03";
-  }
-
-  html {
-    @apply scroll-smooth;
-  }
-  
-  ::selection {
-    @apply bg-primary/20 text-primary;
-  }
+html {
+  background: var(--void);
+  scroll-behavior: smooth;
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  
-  .glass {
-    @apply bg-white/50 dark:bg-black/50 backdrop-blur-xl border border-white/20 dark:border-white/10 shadow-lg;
-  }
-  
-  .glass-dark {
-    @apply bg-black/10 backdrop-blur-xl border border-white/10 shadow-lg;
-  }
-  
-  .section-container {
-    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24;
-  }
-  
-  .heading-xl {
-    @apply text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight;
-  }
-  
-  .heading-lg {
-    @apply text-3xl sm:text-4xl font-bold tracking-tight;
-  }
-  
-  .heading-md {
-    @apply text-2xl sm:text-3xl font-bold tracking-tight;
-  }
-  
-  .heading-sm {
-    @apply text-xl sm:text-2xl font-semibold tracking-tight;
-  }
-  
-  .paragraph {
-    @apply text-base sm:text-lg leading-relaxed;
-  }
-  
-  .link-underline {
-    @apply relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-full after:origin-bottom-left after:scale-x-0 after:bg-primary after:transition-transform after:duration-300 hover:after:origin-bottom-left hover:after:scale-x-100;
-  }
+body {
+  margin: 0;
+  background: var(--void);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+::selection { background: var(--bright); color: var(--void); }
+
+a {
+  color: var(--bright);
+  text-decoration: none;
+  border-bottom: 1px solid var(--line);
+}
+a:hover { border-bottom-color: var(--muted); }
+
+:focus-visible { outline: 2px solid var(--bright); outline-offset: 2px; }
+
+code, .mono { font-family: var(--mono); }
+
+h1, h2, h3 {
+  font-family: var(--mono);
+  color: var(--bright);
+  margin: 0 0 .6em 0;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+p { max-width: 64ch; margin: 0 0 1em 0; }
+
+/* ============================================================
+   Boot overlay
+   ============================================================ */
+#boot-overlay {
+  position: fixed; inset: 0; background: var(--void); color: var(--muted);
+  font-family: var(--mono); font-size: 13px; padding: 10vh 6vw;
+  z-index: 999; transition: opacity .5s ease;
+}
+#boot-overlay.hidden { opacity: 0; pointer-events: none; }
+.boot-line { opacity: 0; white-space: pre-wrap; }
+.boot-line.show { opacity: 1; }
+.boot-ascii {
+  margin: 0 0 22px 0; line-height: 1.15;
+  color: var(--bright); font-size: 13px; white-space: pre-wrap;
+}
+.boot-ok { color: var(--bright); }
+.cursor-block {
+  display: inline-block; width: .55em; height: 1.05em;
+  background: var(--bright); vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ============================================================
+   Shell scaffold — sidebar + editor grid
+   ============================================================ */
+.shell {
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  min-height: 100vh;
+  padding-bottom: var(--statusbar-h);
+}
+
+/* ---------- sidebar ---------- */
+.sidebar {
+  border-right: 1px solid var(--line);
+  background: var(--panel);
+  padding: 20px 0;
+  position: sticky; top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  display: flex; flex-direction: column;
+}
+.prompt-id {
+  font-family: var(--mono); font-size: 13px; color: var(--muted);
+  padding: 0 20px 18px 20px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 14px;
+}
+.prompt-id b { color: var(--bright); font-weight: 500; }
+
+nav.filetree { flex: 1; }
+.filetree ul { list-style: none; margin: 0; padding: 0; }
+.filetree li a {
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 13.5px; color: var(--muted);
+  padding: 7px 20px; border-bottom: none;
+  border-left: 2px solid transparent;
+  position: relative;
+  transition: color 0.15s ease;
+}
+.filetree li a .chev { color: var(--line); width: .8em; display: inline-block; }
+.filetree li a:hover { color: var(--ink); }
+.filetree li a.active { color: var(--bright); border-left-color: var(--bright); }
+.filetree li a.active .chev { color: var(--bright); }
+
+.sidebar-status {
+  font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+  padding: 14px 20px 0 20px;
+  border-top: 1px solid var(--line); margin-top: 14px;
+}
+
+/* ---------- editor column ---------- */
+.editor { min-width: 0; }
+
+.tabbar {
+  display: flex; overflow-x: auto;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  position: sticky; top: 0; z-index: 5;
+  height: var(--tabbar-h);
+}
+.tabbar a {
+  font-family: var(--mono); font-size: 12.5px; color: var(--muted);
+  padding: 0 16px; display: flex; align-items: center; gap: 7px;
+  border-right: 1px solid var(--line);
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+.tabbar a .dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--line);
+}
+.tabbar a.active { color: var(--bright); border-bottom-color: var(--bright); }
+.tabbar a.active .dot { background: var(--bright); }
+
+/* responsive: sidebar vs tabbar */
+@media (max-width: 880px) {
+  .shell { grid-template-columns: 1fr; }
+  .sidebar { display: none !important; }
+}
+@media (min-width: 881px) {
+  .tabbar { display: none; }
+}
+
+/* ---------- file sections ---------- */
+section.file {
+  padding: 56px clamp(20px, 5vw, 64px) 72px clamp(20px, 5vw, 64px);
+  border-bottom: 1px solid var(--line);
+}
+section.file:last-of-type { border-bottom: none; }
+
+.filehead {
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+  margin-bottom: 26px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+}
+
+/* ============================================================
+   Code block (gutter + source) — whoami section
+   ============================================================ */
+.code-block {
+  font-family: var(--mono); font-size: 14px; line-height: 1.85;
+  display: grid; grid-template-columns: 2.4em 1fr;
+}
+.code-block .gutter {
+  color: var(--line); text-align: right; padding-right: 1em; user-select: none;
+}
+.code-block .src { color: var(--ink); white-space: pre-wrap; }
+.code-block .prompt { color: var(--muted); }
+.code-block .out { color: var(--bright); }
+.cursor {
+  display: inline-block; width: .55em; height: 1em;
+  background: var(--bright); vertical-align: text-bottom; margin-left: 2px;
+  animation: blink 1s step-end infinite;
+}
+
+.bio {
+  margin-top: 28px; padding-top: 22px;
+  border-top: 1px dashed var(--line);
+  font-size: 15px; color: var(--ink);
+}
+.bio .tag-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.tag {
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+  border: 1px solid var(--line); padding: 3px 9px;
+}
+
+/* ============================================================
+   Hero grid / widget panel
+   ============================================================ */
+.hero-grid {
+  display: grid; grid-template-columns: 1fr 260px; gap: 36px; align-items: start;
+}
+@media (max-width: 960px) { .hero-grid { grid-template-columns: 1fr; } }
+
+.widget-panel {
+  border: 1px solid var(--line); background: var(--panel);
+  padding: 16px 18px; font-family: var(--mono); font-size: 12px; color: var(--muted);
+}
+.widget-panel .row {
+  display: flex; justify-content: space-between; gap: 10px;
+  padding: 8px 0; border-bottom: 1px dashed var(--line);
+}
+.widget-panel .row:last-child { border-bottom: none; }
+.widget-panel .row.stack {
+  flex-direction: column; align-items: flex-start; gap: 8px;
+}
+.widget-panel .val { color: var(--bright); }
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--bright);
+  display: inline-block; margin-right: 6px;
+  animation: blink 1.6s ease-in-out infinite;
+}
+
+.handshake { width: 100%; height: auto; margin-top: 2px; }
+.hs-line { stroke: var(--line); stroke-width: 1; }
+.hs-node { stroke: var(--bright); fill: none; stroke-width: 1.4; }
+.hs-label { fill: var(--muted); font-family: var(--mono); font-size: 9px; }
+.hs-dot { fill: var(--bright); }
+@keyframes hs-ping { 0%, 100% { cx: 20; } 50% { cx: 200; } }
+.hs-dot { animation: hs-ping 3.6s ease-in-out infinite; }
+
+/* ============================================================
+   Usage meter (top-style bars)
+   ============================================================ */
+.usage { margin-top: 22px; }
+.usage-row {
+  display: grid; grid-template-columns: 112px 1fr auto; gap: 12px;
+  align-items: center;
+  font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+  margin-bottom: 9px;
+}
+.usage-row .ul-bar {
+  height: 5px; background: var(--line); position: relative; overflow: hidden;
+}
+.usage-row .ul-bar i {
+  position: absolute; left: 0; top: 0; bottom: 0; width: 0;
+  background: var(--bright); transition: width 1.1s ease; font-style: normal;
+}
+.usage-row.filled .ul-bar i { width: var(--pct); }
+.usage-row .ul-note { color: var(--ink); font-size: 11px; white-space: nowrap; }
+
+/* ============================================================
+   Projects — ls -la table
+   ============================================================ */
+table.ls {
+  width: 100%; border-collapse: collapse;
+  font-family: var(--mono); font-size: 13.5px;
+}
+table.ls caption {
+  text-align: left; color: var(--muted); margin-bottom: 14px; font-size: 12.5px;
+}
+table.ls thead th {
+  color: var(--muted); text-align: left; font-weight: 400;
+  border-bottom: 1px solid var(--line); padding: 6px 10px 6px 0;
+}
+table.ls tbody tr {
+  border-bottom: 1px solid var(--line); cursor: pointer;
+}
+table.ls tbody tr:hover .name { color: var(--bright); }
+table.ls td {
+  padding: 11px 10px 11px 0; vertical-align: top; color: var(--muted);
+}
+table.ls td.name { color: var(--ink); font-weight: 500; }
+table.ls td.perm { white-space: nowrap; }
+
+.proj-row td { border-bottom: none; }
+.proj-detail { grid-column: 1 / -1; }
+.proj-detail-inner {
+  max-height: 0; overflow: hidden; transition: max-height .35s ease;
+  border-left: 2px solid var(--line); margin-left: 2px;
+}
+.proj-detail-inner.open { max-height: 600px; }
+.proj-detail-inner .pad { padding: 4px 0 22px 18px; }
+.proj-detail-inner p {
+  font-family: var(--sans); font-size: 14.5px; color: var(--ink);
+}
+.proj-detail-inner .tag-row {
+  display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0;
+}
+.proj-links a { font-size: 12.5px; }
+
+/* ============================================================
+   Skills — man page
+   ============================================================ */
+.man h3 {
+  font-family: var(--mono); font-size: 13px; color: var(--muted);
+  letter-spacing: .06em; margin: 30px 0 10px 0;
+}
+.man h3:first-child { margin-top: 0; }
+.man .opt-list {
+  display: grid; grid-template-columns: auto 1fr; gap: 6px 22px;
+  font-family: var(--mono); font-size: 13.5px;
+}
+.man .opt-list dt { color: var(--bright); }
+.man .opt-list dd { margin: 0; color: var(--muted); }
+.man p.syn { font-family: var(--mono); font-size: 14px; color: var(--ink); }
+
+/* ============================================================
+   Community log — git-log entries
+   ============================================================ */
+.log-entry {
+  display: grid; grid-template-columns: 6.5em 1fr; gap: 14px;
+  padding: 14px 0; border-bottom: 1px solid var(--line);
+  opacity: 0; transform: translateY(0);
+  transition: opacity 0.4s ease;
+}
+.log-entry.show { opacity: 1; }
+.log-entry .hash {
+  font-family: var(--mono); font-size: 12.5px; color: var(--muted);
+}
+.log-entry .msg { font-size: 14.5px; color: var(--ink); }
+.log-entry .msg b { color: var(--bright); font-weight: 500; }
+
+/* ============================================================
+   Contact — mail-compose form
+   ============================================================ */
+.mailform {
+  font-family: var(--mono); font-size: 13.5px; max-width: 560px;
+}
+.mailform .field { margin-bottom: 16px; }
+.mailform label {
+  display: block; color: var(--muted); margin-bottom: 6px; font-size: 12.5px;
+}
+.mailform input, .mailform textarea {
+  width: 100%; background: var(--panel); border: 1px solid var(--line);
+  color: var(--bright);
+  font-family: var(--mono); font-size: 13.5px; padding: 9px 10px;
+}
+.mailform input:focus, .mailform textarea:focus {
+  border-color: var(--muted); outline: none;
+}
+.mailform textarea { resize: vertical; min-height: 110px; }
+.mailform button {
+  font-family: var(--mono); font-size: 13px;
+  background: var(--bright); color: var(--void);
+  border: none; padding: 10px 18px; cursor: pointer;
+  transition: background 0.15s ease;
+}
+.mailform button:hover { background: var(--ink); }
+
+.resume-link {
+  font-family: var(--mono); font-size: 12.5px; color: var(--muted);
+  margin-top: 24px; padding-top: 16px; border-top: 1px dashed var(--line);
+}
+.resume-link a { font-size: 12.5px; }
+
+/* ============================================================
+   Status bar — VS Code style fixed bottom
+   ============================================================ */
+.statusbar {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  height: var(--statusbar-h);
+  background: var(--panel); border-top: 1px solid var(--line);
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 14px; z-index: 10;
+}
+.statusbar span b { color: var(--bright); font-weight: 500; }
+
+/* ============================================================
+   Scanline / grain atmosphere overlay
+   ============================================================ */
+.atmosphere {
+  position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  opacity: .035; mix-blend-mode: overlay;
+  background-image: repeating-linear-gradient(0deg, #fff 0 1px, transparent 1px 3px);
+}
+
+/* ============================================================
+   Reduced motion — accessible fallback
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  #boot-overlay { display: none; }
+  .cursor, .cursor-block { animation: none; opacity: 1; }
+  .log-entry { opacity: 1; }
+  .atmosphere { display: none; }
+  .status-dot, .hs-dot { animation: none; }
+  .usage-row .ul-bar i { transition: none; }
 }
