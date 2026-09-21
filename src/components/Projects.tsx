@@ -53,8 +53,8 @@ const PROJECTS: Project[] = [
     detail:
       'Built during an internship at ICT Academy of Kerala: a Flask and scikit-learn loan-approval prediction system with a Mistral AI explainability layer sitting behind an /assistant route, so a rejected or approved decision comes with a plain-language reason attached.',
     tags: ['Flask', 'scikit-learn', 'Mistral AI'],
-    link: '#contact',
-    linkLabel: 'ask about this project →',
+    link: 'https://github.com/ABHIRAM-CREATOR06/internship_project',
+    linkLabel: 'github.com/ABHIRAM-CREATOR06/internship_project',
   },
 ];
 
