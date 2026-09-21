@@ -20,8 +20,8 @@ const PROJECTS: Project[] = [
     detail:
       'An accessibility auditing tool built to check software against WCAG 2.2 and India\'s Rights of Persons with Disabilities Act. Shipped as SDKs across three ecosystems — .NET, npm, and Rust — so it can drop into whatever stack a team is already running. Presented at MangaluruFOSS.',
     tags: ['.NET', 'npm', 'Rust', 'WCAG 2.2'],
-    link: '#contact',
-    linkLabel: 'ask about this project →',
+    link: 'https://github.com/ABHIRAM-CREATOR06/Acess1',
+    linkLabel: 'github.com/ABHIRAM-CREATOR06/Acess1',
   },
   {
     id: 'p-halonyx',
