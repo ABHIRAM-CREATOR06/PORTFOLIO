@@ -8,6 +8,11 @@ interface LogEntry {
 
 const LOG_ENTRIES: LogEntry[] = [
   {
+    hash: '65ac641',
+    highlight: 'rust-analyzer #23464',
+    message: ' — merged fix: use sub-unification roots in type_var_is_sized',
+  },
+  {
     hash: 'a1c9f02',
     highlight: 'Advisory Committe Member Tinkerhub',
     message: ', TinkerHub — currently mentor for Adi Shankara & CUSAT chapters',
@@ -95,6 +100,16 @@ const CommunityLog = () => {
             msgContent = (
               <span className="msg">
                 Spoke at <b>{entry.highlight}</b> events; attended IndiaFOSS
+              </span>
+            );
+          } else if (entry.hash === '65ac641') {
+            msgContent = (
+              <span className="msg">
+                Merged{' '}
+                <a href="https://github.com/rust-lang/rust-analyzer/pull/23464" target="_blank" rel="noopener noreferrer">
+                  {entry.highlight}
+                </a>
+                {entry.message}
               </span>
             );
           } else {
